@@ -15,7 +15,8 @@ class MagicalContainer{
     class AscendingIterator{
         public:
         const MagicalContainer* container_;
-        int Index_;
+        unsigned long Index_;
+        vector<const int*> pointersVector;
         //AscendingIterator(); 
         AscendingIterator(const AscendingIterator& other);
         AscendingIterator(const MagicalContainer& other);
