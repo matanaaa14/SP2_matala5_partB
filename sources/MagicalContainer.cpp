@@ -38,6 +38,8 @@
     }
     MagicalContainer::AscendingIterator::~AscendingIterator(){}
     MagicalContainer::AscendingIterator& MagicalContainer::AscendingIterator::operator=(const AscendingIterator& other){
+        if(this->container_ != NULL)
+            __throw_runtime_error("not empty\n");
         this->container_ = other.container_;
         this->Index_ = other.Index_;
         this->pointersVector = other.pointersVector;
@@ -48,9 +50,11 @@
     bool MagicalContainer::AscendingIterator::operator!=(const MagicalContainer::AscendingIterator& other) const{return !(*this == other);}
     bool MagicalContainer::AscendingIterator::operator<(const MagicalContainer::AscendingIterator& other){return this->Index_ < other.Index_;}
     bool MagicalContainer::AscendingIterator::operator>(const MagicalContainer::AscendingIterator& other){return this->Index_ > other.Index_;}
-    int MagicalContainer::AscendingIterator::operator   *(){
+    int MagicalContainer::AscendingIterator::operator*(){
             return *(this->pointersVector.at(this->Index_));}
     MagicalContainer::AscendingIterator& MagicalContainer::AscendingIterator::operator++(){
+        if(this->Index_ == this->container_->size() )
+            __throw_runtime_error("++\n");
         this->Index_++;
         return *this;}
     MagicalContainer::AscendingIterator& MagicalContainer::AscendingIterator::begin(){this->Index_ = 0;return *this;}
@@ -75,6 +79,8 @@
     }
     MagicalContainer::PrimeIterator::~PrimeIterator(){}
     MagicalContainer::PrimeIterator& MagicalContainer::PrimeIterator::operator=(const PrimeIterator& other){
+        if(this->container_ != NULL)
+            __throw_runtime_error("not empty\n");
         this->container_ = other.container_;
         this->Index_ = other.Index_;
         return *this;
@@ -84,8 +90,12 @@
     bool MagicalContainer::PrimeIterator::operator!=(const MagicalContainer::PrimeIterator& other) const{return !(*this == other);}
     bool MagicalContainer::PrimeIterator::operator<(const MagicalContainer::PrimeIterator& other){return this->Index_ < other.Index_;}
     bool MagicalContainer::PrimeIterator::operator>(const MagicalContainer::PrimeIterator& other){return this->Index_ > other.Index_;}
-    int MagicalContainer::PrimeIterator::operator*(){    return *(this->pointersVector.at(static_cast<std::vector<int>::size_type>(this->Index_)));}
+    int MagicalContainer::PrimeIterator::operator*(){   
+         int value = *(this->pointersVector.at(0));
+         return *(this->pointersVector.at(static_cast<std::vector<unsigned long>::size_type>(this->Index_)));}
     MagicalContainer::PrimeIterator& MagicalContainer::PrimeIterator::operator++(){
+        if(this->Index_ == this->pointersVector.size())
+            __throw_runtime_error("++");
         this->Index_++;
         return *this;}
     MagicalContainer::PrimeIterator& MagicalContainer::PrimeIterator::begin(){this->Index_ = 0;return *this;}
@@ -93,6 +103,7 @@
     MagicalContainer::PrimeIterator::PrimeIterator(const PrimeIterator& other){
         this->container_ = other.container_;
         this->Index_ = other.Index_;
+        this->pointersVector = other.pointersVector;
     }
 
     bool MagicalContainer::PrimeIterator::isPrime(int number) {
@@ -122,6 +133,8 @@
     }
     MagicalContainer::SideCrossIterator::~SideCrossIterator(){}
     MagicalContainer::SideCrossIterator& MagicalContainer::SideCrossIterator::operator=(const SideCrossIterator& other){
+        if(this->container_ != NULL)
+            __throw_runtime_error("not empty\n");
         this->container_ = other.container_;
         this->Index_ = other.Index_;
         this->fromTheBegin = other.fromTheBegin;
@@ -130,22 +143,24 @@
 
         }
     bool MagicalContainer::SideCrossIterator::operator==(const MagicalContainer::SideCrossIterator& other) const{
-        printf("==\n");
         return (this->fromTheBegin == other.fromTheBegin && this->fromTheEnd == other.fromTheEnd  );}
     bool MagicalContainer::SideCrossIterator::operator!=(const MagicalContainer::SideCrossIterator& other) const{return !(*this == other);}
     bool MagicalContainer::SideCrossIterator::operator<(const MagicalContainer::SideCrossIterator& other){return this->Index_ < other.Index_;}
     bool MagicalContainer::SideCrossIterator::operator>(const MagicalContainer::SideCrossIterator& other){return this->Index_ > other.Index_;}
     int MagicalContainer::SideCrossIterator::operator*(){    return this->container_->myVector.at(static_cast<std::vector<int>::size_type>(this->Index_));}
     MagicalContainer::SideCrossIterator& MagicalContainer::SideCrossIterator::operator++(){
+        if((this->container_->myVector.size() % 2 == 0)&&(this->Index_ == this->container_->size() / 2) &&(this->fromTheBegin == this->container_->size() / 2) &&(this->fromTheEnd == this->container_->size() / 2))
+            __throw_runtime_error("++\n");
+        else if(this->Index_ == this->container_->size() / 2 && this->fromTheBegin == this->container_->size() / 2 + 1 && this->fromTheEnd == this->container_->size() / 2 - 1)
+            __throw_runtime_error("++\n");
+    
         if(this->cnt % 2 == 0){
             this->Index_ = this->fromTheBegin;
             this->fromTheBegin++;
-            printf("yes\n");
         }
         else{
             this->Index_ = this->fromTheEnd;
             this->fromTheEnd--;
-            printf("no\n");
         }
         this->cnt++;
         
@@ -154,6 +169,7 @@
     {this->Index_ = 0;
     this->fromTheBegin = 1;
     this->fromTheEnd = this->container_->size() - 1;
+    this->cnt = 1;
     return *this;}
     MagicalContainer::SideCrossIterator& MagicalContainer::SideCrossIterator::end(){
         if(this->container_->myVector.size() % 2 == 0){

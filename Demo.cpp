@@ -25,17 +25,7 @@ int main() {
     // Use DescendingIterator to display elements in descending order
     std::cout << "Elements in cross order:\n";
     MagicalContainer::SideCrossIterator crossIter(container);
-    printf("fromthelast1: %d\n",crossIter.fromTheEnd);
-    printf("size: %d\n",crossIter.container_->size());
-    printf("start: %d\n",crossIter.end().fromTheBegin);
-    printf("end: %d\n",crossIter.end().fromTheEnd);
-    for (auto it = crossIter.begin(); it != crossIter.end(); ++it) {
-    printf("fromthelast2: %d\n",it.fromTheEnd);
-    printf("fromthebegin2: %d\n",it.fromTheBegin);
-    printf("index: %d\n",it.Index_);
-        std::cout << *it << ' ';  // 2 25 3 17 9
-    }
-    std::cout << std::endl;
+
     for (auto it = crossIter.begin(); it != crossIter.end(); ++it) {
         std::cout << *it << ' ';  // 2 25 3 17 9
     }
